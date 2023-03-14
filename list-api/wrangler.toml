@@ -1,0 +1,9 @@
+name = "list-api"
+main = "src/index.ts"
+compatibility_date = "2023-03-13"
+
+[[ d1_databases ]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "list"
+database_id = "341646ec-820c-4752-8b43-8be6e72ee050"
+preview_database_id = "341646ec-820c-4752-8b43-8be6e72ee050"
