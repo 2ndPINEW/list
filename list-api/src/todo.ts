@@ -71,10 +71,20 @@ const deleteTodoFromId = async (id: string, env: Env) => {
   return Response.json(res);
 };
 
+const deleteAllTodo = async (env: Env) => {
+  const result = await env.DB.prepare(`delete from lists`).all();
+  const res = result.success
+    ? successResponse
+    : createErrorResponse("D-500", "エラー");
+
+  return Response.json(res);
+};
+
 export {
   createTodo,
   getTodos,
   getTodoFromId,
   updateTodoContents,
   deleteTodoFromId,
+  deleteAllTodo,
 };

@@ -4,6 +4,7 @@ import {
   getTodoFromId,
   updateTodoContents,
   deleteTodoFromId,
+  deleteAllTodo,
 } from "./todo";
 import { Env } from "./types";
 import { createErrorResponse } from "./util";
@@ -12,12 +13,25 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const { pathname } = new URL(request.url);
 
+    if (request.method === "POST" || request.method === "DELETE") {
+      const apiKey = request.headers.get("api-key");
+      if (apiKey !== env.API_KEY) {
+        const res = createErrorResponse("A-401", "認証エラー");
+        return Response.json(res);
+      }
+    }
+
+    // TODO: デコレータ作った方がコード綺麗になる
     if (pathname === "/api/todos/create" && request.method === "POST") {
       return createTodo(request, env);
     }
 
-    if (pathname === "/api/todos") {
+    if (pathname === "/api/todos" && request.method === "GET") {
       return getTodos(env);
+    }
+
+    if (pathname === "/api/todos" && request.method === "DELETE") {
+      return deleteAllTodo(env);
     }
 
     // /api/todos/{id}
